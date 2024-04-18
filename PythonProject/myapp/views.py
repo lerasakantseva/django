@@ -1,5 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
+from rest_framework.decorators import api_view
+
 from .models import Note
 from .forms import NoteForm
 
@@ -12,6 +14,7 @@ def note(request):
 def test(request):
     return HttpResponse('test page')
 
+@api_view(['POST'])
 def add_note(request):
     if request.method == 'POST':
         form = NoteForm(request.POST)

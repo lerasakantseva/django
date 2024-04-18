@@ -21,6 +21,7 @@ def index(request):
     else:
         return redirect('login')
 
+@api_view(['POST'])
 def user_login(request):
     if request.method == 'POST':
         username = request.POST['username']
@@ -38,22 +39,22 @@ def user_logout(request):
     logout(request)
     return redirect('login')
 
+@api_view(['POST'])
 def user_registration(request):
-    if request.method == 'POST':
-        form = UserForm(request.POST)
-        if form.is_valid():
-            username = form.cleaned_data['username']
-            existing_user = User.objects.filter(username=username)
-            if len(existing_user) == 0:
-                password = form.cleaned_data['password']
-                user = User.objects.create_user(username,'',password)
-                user.save()
-                user = authenticate(request, username = username, password=password)
-                login(request, user)
-                return redirect('index')
-            else:
-                return render(request, 'registration.html', {'invalid': True, 'form': form})
+    form = UserForm(request.POST)
+    if form.is_valid():
+        username = form.cleaned_data['username']
+        existing_user = User.objects.filter(username=username)
+        if len(existing_user) == 0:
+            password = form.cleaned_data['password']
+            user = User.objects.create_user(username,'',password)
+            user.save()
+            user = authenticate(request, username = username, password=password)
+            login(request, user)
+            return redirect('index')
         else:
-            form = UserForm()
-            return render(request, 'registration.html', {'invalid': False, 'form': form})
+            return render(request, 'registration.html', {'invalid': True, 'form': form})
+    else:
+        form = UserForm()
+        return render(request, 'registration.html', {'invalid': False, 'form': form})
 
