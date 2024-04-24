@@ -14,7 +14,6 @@ def note(request):
 def test(request):
     return HttpResponse('test page')
 
-@api_view(['POST'])
 def add_note(request):
     if request.method == 'POST':
         form = NoteForm(request.POST)

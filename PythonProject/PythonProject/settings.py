@@ -54,12 +54,14 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'myapp.urls'
+ROOT_URLCONF = 'auth_clicker.urls'
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            BASE_DIR / "frontend/templates",
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
