@@ -1,10 +1,11 @@
-from backend.models import Core
+from backend.models import Core, Boost
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
-from rest_framework import generics
+from rest_framework import generics, viewsets
 from .forms import UserForm
 from .serializers import UserSerializer, UserSerializerDetail
+from backend.serializers import BoostSerializer
 
 
 class UserList(generics.ListAPIView):
@@ -15,6 +16,16 @@ class UserList(generics.ListAPIView):
 class UserDetail(generics.RetrieveAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializerDetail
+
+
+class BoostViewSet(viewsets.ModelViewSet):
+    queryset = Boost.objects.all()
+    serializer_class = BoostSerializer
+
+    def get_queryset(self):
+        core = Core.objects.get(user=self.request.user)
+        boosts = Boost.objects.filter(core=core)
+        return boosts
 
 
 def index(request):
