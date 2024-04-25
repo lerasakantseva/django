@@ -4,5 +4,6 @@ from .models import Core
 
 class CoreSerializer(ModelSerializer):
     class Meta:
-        model = core
+        model = Core
         fields = ['coins', 'click_power']
+

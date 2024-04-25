@@ -8,7 +8,7 @@ class UserForm(forms.Form):
 
     class Meta:
         model = User
-        fields = ['Username', 'password']
+        fields = ['username', 'password']
 
         def save(self, commit=True):
             username = self.cleaned_data['username']
