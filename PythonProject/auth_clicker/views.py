@@ -57,6 +57,7 @@ def user_logout(request):
 
 def user_registration(request):
     if request.method == 'POST':
+        print(111111111111)
         form = UserForm(request.POST)
         if form.is_valid():
             username = form.cleaned_data['username']
@@ -74,3 +75,7 @@ def user_registration(request):
                 return render(request, 'registration.html', {'invalid': True, 'form': form})
         else:
             return render(request, 'registration.html', {'invalid': False, 'form': form})
+
+    if request.method == 'GET':
+        form = UserForm()
+        return render(request, 'registration.html', {'invalid': False, 'form': form})
