@@ -3,6 +3,8 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from rest_framework import generics, viewsets
+from rest_framework.response import Response
+
 from .forms import UserForm
 from .serializers import UserSerializer, UserSerializerDetail
 from backend.serializers import BoostSerializer
@@ -16,17 +18,6 @@ class UserList(generics.ListAPIView):
 class UserDetail(generics.RetrieveAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializerDetail
-
-
-class BoostViewSet(viewsets.ModelViewSet):
-    queryset = Boost.objects.all()
-    serializer_class = BoostSerializer
-
-    def get_queryset(self):
-        core = Core.objects.get(user=self.request.user)
-        boosts = Boost.objects.filter(core=core)
-        return boosts
-
 
 def index(request):
     user = User.objects.filter(id=request.user.id)
@@ -57,7 +48,6 @@ def user_logout(request):
 
 def user_registration(request):
     if request.method == 'POST':
-        print(111111111111)
         form = UserForm(request.POST)
         if form.is_valid():
             username = form.cleaned_data['username']
